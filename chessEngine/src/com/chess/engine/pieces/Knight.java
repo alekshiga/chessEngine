@@ -18,8 +18,8 @@ public class Knight extends Piece {
     private static final int[] CANDIDATE_MOVE_COORDINATES = { -17, -15, -10, -6, 6, 10, 15, 17 };
     /*board has 64 tiles, a Knight has 8 moves in the best way, array the array contains possible moves relative to the current position of the knight*/
 
-    Knight(final int piecePosition, final Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance);
+    public Knight(final int piecePosition, final Alliance pieceAlliance) {
+        super(PieceType.KNIGHT, piecePosition, pieceAlliance);
     }
 
     @Override
@@ -52,6 +52,16 @@ public class Knight extends Piece {
             }
         }
         return ImmutableList.copyOf((legalMoves));
+    }
+
+    @Override
+    public Knight movePiece(final Move move) {
+        return new Knight(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.KNIGHT.toString();
     }
 
     private static boolean isFirstColumnException(final int currentPosition, final int candidateOffset) {

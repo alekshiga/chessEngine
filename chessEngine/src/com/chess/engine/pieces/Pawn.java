@@ -14,10 +14,10 @@ import java.util.List;
 
 public class Pawn extends Piece {
 
-    private final static int[] CANDIDATE_MOVE_COORDINATE = { -7, 7, 8, 16 };
+    private final static int[] CANDIDATE_MOVE_COORDINATE = {7, 8, 9, 16 };
 
-    Pawn(final int piecePosition, final Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance);
+    public Pawn(final int piecePosition, final Alliance pieceAlliance) {
+        super(PieceType.PAWN, piecePosition, pieceAlliance);
     }
 
     @Override
@@ -33,6 +33,9 @@ public class Pawn extends Piece {
             }
 
             if (currentCandidateOffset == 8 && !board.getTile(candidateDestinationCoordinate).isOccupied()) {
+
+                // TODO PAWN PROMOTION!
+
                 legalMoves.add(new majorMove(board, this, candidateDestinationCoordinate));
             } else if (currentCandidateOffset == 16 && this.isFirstMove() &&
                     BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceAlliance().isBlack() ||
@@ -42,14 +45,51 @@ public class Pawn extends Piece {
                         !board.getTile(candidateDestinationCoordinate).isOccupied()) {
                     legalMoves.add(new majorMove(board, this, candidateDestinationCoordinate));
                 }
-            } else if ((currentCandidateOffset == -7 || currentCandidateOffset == 7) &&
-                    board.getTile(currentCandidateOffset).isOccupied() &&
-                    board.getTile(currentCandidateOffset).getPiece().getPieceAlliance() != this.pieceAlliance) {
-                final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
-                final Piece pieceAtDestination = candidateDestinationTile.getPiece();
-                legalMoves.add(new Move.pawnAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));    // if tile is occupied you can only move there with Knight if tile is occupied with enemy piece
+            } else if (  (currentCandidateOffset == 7) &&
+                    !((BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isWhite()) ||
+                    (BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack()))  ) {
+                if (board.getTile(candidateDestinationCoordinate).isOccupied()) {
+                    final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
+                    if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
+
+                        // TODO MORE MOVE SUBCLASSES
+
+                        legalMoves.add(new majorMove(board, this, candidateDestinationCoordinate));
+                    }
+                }
+            } else if (  (currentCandidateOffset == 9) &&
+                    !((BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceAlliance.isWhite()) ||
+                    (BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack()))  ) {
+                if (board.getTile(candidateDestinationCoordinate).isOccupied()) {
+                    final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
+                    if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
+
+                        // TODO MORE MOVE SUBCLASSES
+
+                        legalMoves.add(new majorMove(board, this, candidateDestinationCoordinate));
+                    }
+                }
             }
         }
         return ImmutableList.copyOf(legalMoves);
     }
+
+    @Override
+    public Pawn movePiece(final Move move) {
+        return new Pawn(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.PAWN.toString();
+    }
 }
+
+
+
+
+
+
+
+
+
