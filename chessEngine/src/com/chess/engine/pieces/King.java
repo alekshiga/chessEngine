@@ -5,6 +5,7 @@ import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
+import com.chess.engine.player.Player;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
@@ -17,7 +18,11 @@ public class King extends Piece {
     private final static int[] CANDIDATE_MOVE_COORDINATE = { -9, -8, -7, -1, 1, 7, 8, 9};
 
     public King(final int piecePosition, final Alliance pieceAlliance) {
-        super(PieceType.KING, piecePosition, pieceAlliance);
+        super(PieceType.KING, piecePosition, pieceAlliance, true);
+    }
+
+    public King(final int piecePosition, final Alliance pieceAlliance, final boolean isFirstMove) {
+        super(PieceType.KING, piecePosition, pieceAlliance, isFirstMove);
     }
 
     @Override
@@ -26,19 +31,20 @@ public class King extends Piece {
         final List<Move> legalMoves = new ArrayList<>();
 
         for (final int currentCandidateOffset : CANDIDATE_MOVE_COORDINATE) {
-            final int candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
+            final int candidateDestinationCoordinate
+                    = this.piecePosition + currentCandidateOffset;
             if (isFirstColumnException(this.piecePosition, currentCandidateOffset) || isEighthColumnException(this.piecePosition, candidateDestinationCoordinate)) {
                 continue;
             }
             if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                 final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
-                if (!candidateDestinationTile.isOccupied()) {
-                    legalMoves.add(new majorMove(board, this, candidateDestinationCoordinate));  // if tile is empty then there is one more legal move
+                if (!candidateDestinationTile.isOccupied()) {                                               // if tile is empty then there is one more legal move
+                    legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));  // but you can't go on a tile that is under attack by another Piece
                 } else {
                     final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                     if (this.pieceAlliance != pieceAlliance) {
-                        legalMoves.add(new attackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));    // if tile is occupied you can only move there with Knight if tile is occupied with enemy piece
+                        legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));    // if tile is occupied you can only move there with Knight if tile is occupied with enemy piece
                     }
                 }
             }

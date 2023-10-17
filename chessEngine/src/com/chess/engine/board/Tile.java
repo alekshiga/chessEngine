@@ -34,6 +34,10 @@ public abstract class Tile {
                                                         // abstract methods that will have realisation in subclasses
     public abstract Piece getPiece();
 
+    public int getTileCoordinate() {
+        return this.tileCoordinate;
+    }
+
     public static final class EmptyTile extends Tile {
 
         private EmptyTile(int coordinate) {

@@ -34,7 +34,6 @@ public class Board {
         this.blackPlayer = new BlackPlayer(this, whiteStandartLegalMoves, blackStandartLegalMoves);
 
         this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer, this.blackPlayer);
-
     }
 
     @Override
@@ -152,6 +151,8 @@ public class Board {
         builder.setPiece(new Pawn(54, Alliance.WHITE));
         builder.setPiece(new Pawn(55, Alliance.WHITE));
 
+        builder.setMoveMaker(Alliance.WHITE);
+
         return builder.build();
     }
 
@@ -182,12 +183,10 @@ public class Board {
         public Builder setMoveMaker(final Alliance nextMoveMaker) {
             this.nextMoveMaker = nextMoveMaker;
             return this;
-
         }
 
         public Board build() {
             return new Board(this);
-
         }
 
         public void setEnPassantPawn(Pawn movedPawn) {

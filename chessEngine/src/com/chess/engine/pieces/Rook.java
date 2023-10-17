@@ -3,6 +3,8 @@ import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.MajorAttackMove;
+import com.chess.engine.board.Move.MajorMove;;
 import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
 
@@ -11,37 +13,37 @@ import java.util.Collection;
 import java.util.List;
 
 public class Rook extends Piece {
-
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = { -8, -1, 1, 8 };
-
     public Rook(int piecePosition, Alliance pieceAlliance) {
-        super(PieceType.ROOK, piecePosition, pieceAlliance);
+        super(PieceType.ROOK, piecePosition, pieceAlliance, true);
     }
 
-    @Override
-    public Collection<Move> calculateLegalMoves(final Board board) {
+    public Rook(final int piecePosition, final Alliance pieceAlliance, final boolean isFirstMove) {
+        super(PieceType.ROOK, piecePosition, pieceAlliance, isFirstMove);
+    }
+
+    public Collection<Move> calculateLegalMoves(Board board) {
         final List<Move> legalMoves = new ArrayList<>();
         for (final int candidateCoordinateOffset : CANDIDATE_MOVE_VECTOR_COORDINATES) {
             int candidateDestinationCoordinate = this.piecePosition;
             while (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
-                if(isFirstColumnException(candidateDestinationCoordinate, candidateCoordinateOffset) ||
-                        isEighthColumnException(candidateDestinationCoordinate, candidateCoordinateOffset)) {
+                if (isFirstColumnException(candidateDestinationCoordinate, candidateCoordinateOffset) ||
+                   isEighthColumnException(candidateDestinationCoordinate, candidateCoordinateOffset)) {
                     break;
                 }
                 candidateDestinationCoordinate += candidateCoordinateOffset;
                 if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                     final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                     if (!candidateDestinationTile.isOccupied()) {
-                        legalMoves.add(new Move.majorMove(board, this, candidateDestinationCoordinate));
-                    }
-                    else {
+                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                    } else {
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                         if (this.pieceAlliance != pieceAlliance) {
-                            legalMoves.add(new Move.attackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
+                            legalMoves.add(new MajorAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                         }
+                        break;
                     }
-                    break;
                 }
             }
         }
