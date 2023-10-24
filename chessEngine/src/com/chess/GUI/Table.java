@@ -45,7 +45,9 @@ public class Table {
     private static String pieceIconPath = "C:\\Users\\User\\IdeaProjects\\chessEngine\\artIdea\\";
 
     private Color lightTileColor = Color.decode("#f1f0e6");
-    private Color darkTileColor = Color.decode("#454438");
+    private Color darkTileColor = Color.decode("#606060");
+    private Color legalMoveLightTileColor = Color.decode("#9BFC8C");
+    private Color legalMoveDarkTileColor = Color.decode("#70D560");
 
     private static final Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
     private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(710, 600);
@@ -279,7 +281,6 @@ public class Table {
             this.removeAll();
             if(board.getTile(this.tileId).isOccupied()) {
                 try {
-
                     final BufferedImage image = ImageIO.read(new File(pieceIconPath + board.getTile(this.tileId).getPiece().getPieceAlliance().toString().substring(0,1) +
                             board.getTile(this.tileId).getPiece().toString() + ".png"));
                     add(new JLabel(new ImageIcon(image)));
@@ -294,7 +295,17 @@ public class Table {
                 for (final Move move : pieceLegalMoves(board)) {
                     if (move.getDestinationCoordinate() == this.tileId) {
                         try {
-                            add(new JLabel(new ImageIcon(ImageIO.read(new File("C:\\Users\\User\\IdeaProjects\\chessEngine\\artIdea\\moveDot.png")))));
+                            if (BoardUtils.EIGHTH_RANK[this.tileId] ||
+                                    BoardUtils.SIXTH_RANK[this.tileId] ||
+                                    BoardUtils.FOURTH_RANK[this.tileId] ||
+                                    BoardUtils.SECOND_RANK[this.tileId]) {
+                                setBackground(this.tileId % 2 == 0 ? legalMoveLightTileColor : legalMoveDarkTileColor);
+                            } else if (BoardUtils.SEVENTH_RANK[this.tileId] ||
+                                    BoardUtils.FIFTH_RANK[this.tileId] ||
+                                    BoardUtils.THIRD_RANK[this.tileId] ||
+                                    BoardUtils.FIRST_RANK[this.tileId]) {
+                                setBackground(this.tileId % 2 != 0 ? legalMoveLightTileColor : legalMoveDarkTileColor);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

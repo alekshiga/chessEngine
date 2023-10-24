@@ -1,6 +1,5 @@
 package com.chess.GUI;
 
-import com.chess.engine.Alliance;
 import com.chess.engine.board.Move;
 import com.chess.engine.pieces.Piece;
 import com.google.common.primitives.Ints;
@@ -11,7 +10,6 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOError;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +19,8 @@ import java.util.List;
 import static com.chess.GUI.Table.*;
 
 public class TakenPiecesPanel extends JPanel {
+
+    private static String pieceIconPath = "C:\\Users\\User\\IdeaProjects\\chessEngine\\artIdea\\";
 
     private static final Dimension TAKEN_PIECES_DIMENSION = new Dimension(40, 80);
     private static final Color PANEL_COLOR = Color.decode("0xFDF5E6");
@@ -52,11 +52,11 @@ public class TakenPiecesPanel extends JPanel {
 
         for (final Move move : moveLog.getMoves()) {
             if (move.isAttack()) {
-                final Piece piece = move.getAttackedPiece();
-                if (piece.getPieceAlliance().isWhite()) {
-                    whiteTakenPieces.add(piece);
-                } else if (piece.getPieceAlliance().isBlack()) {
-                    blackTakenPieces.add(piece);
+                final Piece takenPiece = move.getAttackedPiece();
+                if (takenPiece.getPieceAlliance().isWhite()) {
+                    whiteTakenPieces.add(takenPiece);
+                } else if (takenPiece.getPieceAlliance().isBlack()) {
+                    blackTakenPieces.add(takenPiece);
                 } else {
                     throw new RuntimeException("Should not reach here!");
                 }
@@ -78,8 +78,7 @@ public class TakenPiecesPanel extends JPanel {
 
         for (final Piece takenPiece : whiteTakenPieces) {
             try {
-                final BufferedImage image = ImageIO.read(new File("C:\\Users\\User\\IdeaProjects\\chessEngine\\artIdea\\" +
-                        takenPiece.getPieceAlliance().toString().substring(0, 1) + takenPiece.toString() + ".png"));
+                final BufferedImage image = ImageIO.read(new File(pieceIconPath + takenPiece.getPieceAlliance().toString().substring(0, 1) + takenPiece.toString() + ".png"));
                 final ImageIcon icon = new ImageIcon(image);
                 final JLabel imageLabel = new JLabel();
                 this.southPanel.add(imageLabel);
@@ -90,8 +89,7 @@ public class TakenPiecesPanel extends JPanel {
 
         for (final Piece takenPiece : blackTakenPieces) {
             try {
-                final BufferedImage image = ImageIO.read(new File("C:\\Users\\User\\IdeaProjects\\chessEngine\\artIdea\\" +
-                        takenPiece.getPieceAlliance().toString().substring(0, 1) + takenPiece.toString() + ".png"));
+                final BufferedImage image = ImageIO.read(new File(pieceIconPath + takenPiece.getPieceAlliance().toString().substring(0, 1) + takenPiece.toString() + ".png"));
                 final ImageIcon icon = new ImageIcon(image);
                 final JLabel imageLabel = new JLabel();
                 this.southPanel.add(imageLabel);

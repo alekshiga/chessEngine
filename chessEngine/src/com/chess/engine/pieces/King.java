@@ -44,7 +44,7 @@ public class King extends Piece {
                     final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                     if (this.pieceAlliance != pieceAlliance) {
-                        legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));    // if tile is occupied you can only move there with Knight if tile is occupied with enemy piece
+                        legalMoves.add(new MajorAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));    // if tile is occupied you can only move there with Knight if tile is occupied with enemy piece
                     }
                 }
             }
