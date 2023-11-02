@@ -291,24 +291,22 @@ public class Table {
         }
 
         private void showLegalMoves(final Board board) {
-            if (true) {
-                for (final Move move : pieceLegalMoves(board)) {
-                    if (move.getDestinationCoordinate() == this.tileId) {
-                        try {
-                            if (BoardUtils.EIGHTH_RANK[this.tileId] ||
-                                    BoardUtils.SIXTH_RANK[this.tileId] ||
-                                    BoardUtils.FOURTH_RANK[this.tileId] ||
-                                    BoardUtils.SECOND_RANK[this.tileId]) {
-                                setBackground(this.tileId % 2 == 0 ? legalMoveLightTileColor : legalMoveDarkTileColor);
-                            } else if (BoardUtils.SEVENTH_RANK[this.tileId] ||
-                                    BoardUtils.FIFTH_RANK[this.tileId] ||
-                                    BoardUtils.THIRD_RANK[this.tileId] ||
-                                    BoardUtils.FIRST_RANK[this.tileId]) {
-                                setBackground(this.tileId % 2 != 0 ? legalMoveLightTileColor : legalMoveDarkTileColor);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+            for (final Move move : pieceLegalMoves(board)) {
+                if (move.getDestinationCoordinate() == this.tileId) {
+                    try {
+                        if (BoardUtils.EIGHTH_RANK[this.tileId] ||
+                                BoardUtils.SIXTH_RANK[this.tileId] ||
+                                BoardUtils.FOURTH_RANK[this.tileId] ||
+                                BoardUtils.SECOND_RANK[this.tileId]) {
+                            setBackground(this.tileId % 2 == 0 ? legalMoveLightTileColor : legalMoveDarkTileColor);
+                        } else if (BoardUtils.SEVENTH_RANK[this.tileId] ||
+                                BoardUtils.FIFTH_RANK[this.tileId] ||
+                                BoardUtils.THIRD_RANK[this.tileId] ||
+                                BoardUtils.FIRST_RANK[this.tileId]) {
+                            setBackground(this.tileId % 2 != 0 ? legalMoveLightTileColor : legalMoveDarkTileColor);
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -335,14 +333,6 @@ public class Table {
             }
         }
 
-        void setLightTileColor(final Color color) {
-            lightTileColor = color;
-        }
-
-        void setDarkTileColor(final Color color) {
-            darkTileColor = color;
-        }
-
         public void drawTile(final Board board) {
             assignTileColor();
             assignTilePieceIcon(board);
@@ -351,5 +341,4 @@ public class Table {
             repaint();
         }
     }
-
 }

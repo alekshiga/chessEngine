@@ -34,8 +34,7 @@ public class Knight extends Piece {
 
         for (final int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES) {
             final int candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
-            if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {// we cant move forward if piece is on the edge if the board
-
+            if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {         // we cant move forward if piece is on the edge if the board
                 if (isFirstColumnException(this.piecePosition, currentCandidateOffset) ||
                         isSecondColumnException(this.piecePosition, currentCandidateOffset) ||
                         isSeventhColumnException(this.piecePosition, currentCandidateOffset) ||
@@ -53,7 +52,6 @@ public class Knight extends Piece {
                         legalMoves.add(new MajorAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));    // if tile is occupied you can only move there with Knight if tile is occupied with enemy piece
                     }
                 }
-
             }
         }
         return ImmutableList.copyOf((legalMoves));

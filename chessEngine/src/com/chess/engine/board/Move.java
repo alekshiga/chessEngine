@@ -15,8 +15,8 @@ public abstract class Move {
     public static final Move NULL_MOVE = new NullMove();
 
     public Move(final Board board,
-         final Piece movedPiece,
-         final int destinationCoordinate) {
+                final Piece movedPiece,
+                final int destinationCoordinate) {
         this.board = board;
         this.movedPiece = movedPiece;
         this.destinationCoordinate = destinationCoordinate;
@@ -245,11 +245,13 @@ public static class PawnPromotionMove extends PawnMove {
 
     final Move decoratedMove;
     final Pawn promotedPawn;
+    final Piece promotionPiece;
 
-    public PawnPromotionMove(final Move decoratedMove) {
+    public PawnPromotionMove(final Move decoratedMove, final Piece promotionPiece) {
         super(decoratedMove.getBoard(), decoratedMove.getMovedPiece(), decoratedMove.getDestinationCoordinate());
         this.decoratedMove = decoratedMove;
         this.promotedPawn = (Pawn) decoratedMove.getMovedPiece();
+        this.promotionPiece = promotionPiece;
     }
 
     @Override
