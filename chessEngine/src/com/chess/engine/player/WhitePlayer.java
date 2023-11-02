@@ -77,4 +77,9 @@ public class WhitePlayer extends Player {
     public Player getOpponent() {
         return this.board.blackPlayer();
     }
+
+    @Override
+    public String toString() {
+        return "White";
+    }
 }
