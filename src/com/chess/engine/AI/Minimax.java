@@ -29,7 +29,7 @@ public class Minimax implements MoveStrategy {
         int lowestSeenValue = Integer.MAX_VALUE;
         int currentValue;
 
-        System.out.println(board.currentPlayer() + " depth = " + this.depthSearch);
+        System.out.println("depth = " + this.depthSearch);
         int numMoves = board.currentPlayer().getLegalMoves().size();
 
         for (final Move move : board.currentPlayer().getLegalMoves()) {
