@@ -22,7 +22,7 @@ public class Board {
     private final Collection<Piece> blackPieces;
 
 
-    private Board(final Builder builder) {
+    public Board(final BoardBuilder builder) {
 
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = calculateActivePieces(this.gameBoard, Alliance.WHITE);
@@ -102,7 +102,7 @@ public class Board {
     }
 
 
-    private static List<Tile> createGameBoard(final Builder builder) {
+    private static List<Tile> createGameBoard(final BoardBuilder builder) {
         final Tile[] tiles = new Tile[BoardUtils.NUM_TILES];
         for (int i = 0; i < BoardUtils.NUM_TILES; ++i) {
             tiles[i] = Tile.createTile(i, builder.boardConfig.get(i));
@@ -112,7 +112,7 @@ public class Board {
 
     public static Board createStandartBoard() {
 
-        final Builder builder = new Builder();
+        final BoardBuilder builder = new BoardBuilder();
 
         builder.setPiece(new Rook(0, Alliance.BLACK));
         builder.setPiece(new Knight(1, Alliance.BLACK));
@@ -165,40 +165,5 @@ public class Board {
 
     public Pawn getEnPassantPawn() {
         return enPassantPawn;
-    }
-
-    public static class Builder {
-
-        Map<Integer, Piece> boardConfig;
-        Alliance nextMoveMaker;
-        Pawn enPassantPawn;
-        Move transitionMove;
-
-        public Builder() {
-            this.boardConfig = new HashMap<>();
-        }
-
-        public Builder setPiece(final Piece piece) {
-            this.boardConfig.put(piece.getPiecePosition(), piece);
-            return this;
-        }
-
-        public Builder setMoveMaker(final Alliance nextMoveMaker) {
-            this.nextMoveMaker = nextMoveMaker;
-            return this;
-        }
-
-        public Board build() {
-            return new Board(this);
-        }
-
-        public Builder setEnPassantPawn(final Pawn enPassantPawn) {
-            this.enPassantPawn = enPassantPawn;
-            return this;
-        }
-
-        public void setMoveTransition(Move move) {
-            this.transitionMove = move;
-        }
     }
 }

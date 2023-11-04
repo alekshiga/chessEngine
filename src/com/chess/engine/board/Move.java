@@ -1,6 +1,5 @@
 package com.chess.engine.board;
 
-import com.chess.engine.board.Board.Builder;
 import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
@@ -74,7 +73,7 @@ public abstract class Move {
     }
 
     public Board execute() {
-        final Builder builder = new Builder();
+        final BoardBuilder builder = new BoardBuilder();
         for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
             if (!this.movedPiece.equals(piece)) {
                 builder.setPiece(piece);
@@ -231,7 +230,7 @@ public static class PawnEnPassantAttackMove extends PawnAttackMove {
 
         @Override
         public Board execute() {
-            final Board.Builder builder = new Builder();
+            final BoardBuilder builder = new BoardBuilder();
             this.board.currentPlayer().getActivePieces().stream().filter(piece -> !this.movedPiece.equals(piece)).forEach(builder::setPiece);
             this.board.currentPlayer().getOpponent().getActivePieces().stream().filter(piece -> !piece.equals(this.getAttackedPiece())).forEach(builder::setPiece);
             builder.setPiece(this.movedPiece.movePiece(this));
@@ -267,7 +266,7 @@ public static class PawnPromotionMove extends PawnMove {
     @Override
     public Board execute() {
         final Board pawnMovedBoard = this.decoratedMove.execute();
-        final Board.Builder builder = new Builder();
+        final BoardBuilder builder = new BoardBuilder();
         pawnMovedBoard.currentPlayer().getActivePieces().stream().filter(piece -> !this.promotedPawn.equals(piece)).forEach(builder::setPiece);
         pawnMovedBoard.currentPlayer().getOpponent().getActivePieces().forEach(builder::setPiece);
         builder.setPiece(this.promotedPawn.getPromotionPiece().movePiece(this));
@@ -302,7 +301,7 @@ public static final class PawnJump extends Move {
 
         @Override
         public Board execute() {
-            final Builder builder = new Builder();
+            final BoardBuilder builder = new BoardBuilder();
             for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
                 if (!this.movedPiece.equals(piece)) {
                     builder.setPiece(piece);
@@ -352,7 +351,7 @@ public static final class PawnJump extends Move {
 
         @Override
         public Board execute() {
-            final Builder builder = new Builder();
+            final BoardBuilder builder = new BoardBuilder();
             for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
                 if (!this.movedPiece.equals(piece) && !this.castleRook.equals(piece)) {
                     builder.setPiece(piece);
@@ -444,8 +443,8 @@ public static final class PawnJump extends Move {
         }
     }
 
-    public static class moveFactory {
-        private moveFactory() {
+    public static class MoveFactory {
+        private MoveFactory() {
             throw new RuntimeException("Not instantiable!");
         }
         public static Move createMove(final Board board,
