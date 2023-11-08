@@ -1,8 +1,8 @@
 package com.chess.engine.board;
+
 import com.chess.engine.pieces.Piece;
 import com.google.common.collect.ImmutableMap;
 
-import javax.management.ImmutableDescriptor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import static com.chess.engine.board.BoardUtils.NUM_TILES;
 
 public abstract class Tile {
 
-    protected final int tileCoordinate; // tile coordinate set only once and never changes
+    protected final int tileCoordinate;
 
     private static final Map<Integer, EmptyTile> EMPTY_TILES_CACHE = createAllPossibleEmptyTiles();
 
@@ -31,7 +31,7 @@ public abstract class Tile {
     }
 
     public abstract boolean isOccupied();
-                                                        // abstract methods that will have realisation in subclasses
+
     public abstract Piece getPiece();
 
     public int getTileCoordinate() {
@@ -51,12 +51,12 @@ public abstract class Tile {
 
         @Override
         public boolean isOccupied() {
-            return false;   // returns false because it's a method of EmptyTile class
+            return false;
         }
 
         @Override
         public Piece getPiece() {
-            return null;  // returns null because it's nothing on that tile
+            return null;
         }
     }
 
@@ -77,12 +77,12 @@ public abstract class Tile {
 
         @Override
         public boolean isOccupied() {
-            return true; // returns true because there is a piece on that tile
+            return true;
         }
 
         @Override
         public Piece getPiece() {
-            return this.pieceOnTile;    // returns Piece because there is something on that tile
+            return this.pieceOnTile;
         }
     }
 }
