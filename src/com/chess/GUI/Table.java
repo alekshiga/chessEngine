@@ -11,8 +11,6 @@ import com.google.common.collect.Lists;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -23,8 +21,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static com.chess.engine.board.Move.*;
-import static javax.swing.SwingUtilities.*;
+import static com.chess.engine.board.Move.MoveFactory;
+import static javax.swing.SwingUtilities.isLeftMouseButton;
+import static javax.swing.SwingUtilities.isRightMouseButton;
 
 public class Table {
 
@@ -42,12 +41,12 @@ public class Table {
     public boolean highlightLegalMoves;
 
 
-    private static String pieceIconPath = "C:\\Users\\User\\IdeaProjects\\chessEngine\\artIdea\\";
+    private static final String pieceIconPath = "C:\\Users\\User\\IdeaProjects\\chessEngine\\artIdea\\";
 
-    private Color lightTileColor = Color.decode("#f1f0e6");
-    private Color darkTileColor = Color.decode("#606060");
-    private Color legalMoveLightTileColor = Color.decode("#9BFC8C");
-    private Color legalMoveDarkTileColor = Color.decode("#70D560");
+    private final Color lightTileColor = Color.decode("#f1f0e6");
+    private final Color darkTileColor = Color.decode("#606060");
+    private final Color legalMoveLightTileColor = Color.decode("#9BFC8C");
+    private final Color legalMoveDarkTileColor = Color.decode("#70D560");
 
     private static final Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
     private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(710, 600);
@@ -86,21 +85,11 @@ public class Table {
 
         final JMenuItem openPGN = new JMenuItem("Open PGN file");
 
-        openPGN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("open up PGN file");
-            }
-        });
+        openPGN.addActionListener(e -> System.out.println("open up PGN file"));
         fileMenu.add(openPGN);
 
         final JMenuItem exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        exitMenuItem.addActionListener(e -> System.exit(0));
         fileMenu.add(exitMenuItem);
         return fileMenu;
     }
@@ -108,12 +97,9 @@ public class Table {
     private JMenu createPreferencesMenu() {
         final JMenu preferencesMenu = new JMenu("Preferences");
         final JMenuItem flipBoardMenuItem = new JMenuItem("Flip board");
-        flipBoardMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boardDirection = boardDirection.opposite();
-                boardPanel.drawBoard(chessBoard);
-            }
+        flipBoardMenuItem.addActionListener(e -> {
+            boardDirection = boardDirection.opposite();
+            boardPanel.drawBoard(chessBoard);
         });
         preferencesMenu.add(flipBoardMenuItem);
         final JCheckBoxMenuItem legalMoveHighlighterCheckbox = new JCheckBoxMenuItem("Show legal moves", false);
@@ -180,34 +166,6 @@ public class Table {
         }
     }
 
-    public static class MoveLog {
-        private final List<Move> moves;
-
-        MoveLog() {
-            this.moves = new ArrayList<>();
-        }
-
-        public List<Move> getMoves() {
-            return this.moves;
-        }
-
-        public void addMove(Move move) {
-            this.moves.add(move);
-        }
-
-        public int size() {
-            return this.moves.size();
-        }
-
-        public void clear() {
-            this.moves.clear();
-        }
-
-        public boolean removeMove(Move move) {
-            return this.moves.remove(move);
-        }
-    }
-
     private class TilePanel extends JPanel {
 
         private final int tileId;
@@ -234,7 +192,7 @@ public class Table {
                             }
                         } else {
                             destinationTile = chessBoard.getTile(tileId);
-                            final Move move = Move.moveFactory.createMove(chessBoard,sourceTile.getTileCoordinate(),destinationTile.getTileCoordinate());
+                            final Move move = MoveFactory.createMove(chessBoard,sourceTile.getTileCoordinate(),destinationTile.getTileCoordinate());
                             final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                             if(transition.getMoveStatus().isDone()) {
                                 chessBoard = transition.getTransitionBoard();
@@ -281,7 +239,7 @@ public class Table {
             this.removeAll();
             if(board.getTile(this.tileId).isOccupied()) {
                 try {
-                    final BufferedImage image = ImageIO.read(new File(pieceIconPath + board.getTile(this.tileId).getPiece().getPieceAlliance().toString().substring(0,1) +
+                    final BufferedImage image = ImageIO.read(new File(pieceIconPath + board.getTile(this.tileId).getPiece().getPieceAlliance().toString().charAt(0) +
                             board.getTile(this.tileId).getPiece().toString() + ".png"));
                     add(new JLabel(new ImageIcon(image)));
                 } catch (IOException e) {
@@ -340,6 +298,26 @@ public class Table {
             showLegalMoves(board);
             validate();
             repaint();
+        }
+    }
+
+    public static class MoveLog {
+        private final List<Move> moves;
+
+        MoveLog() {
+            this.moves = new ArrayList<>();
+        }
+
+        public List<Move> getMoves() {
+            return this.moves;
+        }
+
+        public void addMove(Move move) {
+            this.moves.add(move);
+        }
+
+        public int size() {
+            return this.moves.size();
         }
     }
 }
