@@ -1,0 +1,3 @@
+//TODO
+Observer design pattern for updating the board for both players
+Singleton design pattern: override clone() method to prohibit copying the singleton instance, give a "final" modifier
