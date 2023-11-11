@@ -124,8 +124,7 @@ public abstract class Move {
 
         @Override
         public String toString() {
-            return BoardUtils.getPositionAtCoordinate(this.movedPiece.getPiecePosition()).charAt(0) + "x" +
-                    BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+            return super.toString();
         }
     }
 
@@ -204,8 +203,7 @@ public abstract class Move {
         }
         @Override
         public String toString() {
-            return BoardUtils.getPositionAtCoordinate(this.movedPiece.getPiecePosition()).charAt(0) + "x" +
-                    BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+            return super.toString();
         }
 
         @Override

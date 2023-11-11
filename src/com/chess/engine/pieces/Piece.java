@@ -46,7 +46,7 @@ public abstract class Piece {
         return this.piecePosition;
     }
 
-    public abstract Collection<Move> calculateLegalMoves(final Board board); // calculates all legal moves using actual board
+    public abstract Collection<Move> calculateLegalMoves(final Board board);
 
     public abstract Piece movePiece(Move move);
 

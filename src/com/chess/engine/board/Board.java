@@ -64,13 +64,13 @@ public class Board {
         return this.whitePieces;
     }
 
-    private static String prettyPrint(final Tile tile) {
+    /*private static String prettyPrint(final Tile tile) {
         if (tile.isOccupied()) {
             return tile.getPiece().getPieceAlliance().isBlack() ? tile.toString().toLowerCase() :
                     tile.toString();
         }
         else return tile.toString();
-    }
+    }*/
 
     private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
 

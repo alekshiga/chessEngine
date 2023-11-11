@@ -17,6 +17,10 @@ public class BoardUtils {
 
     public static final boolean[] EIGHTH_RANK = initRank(56);
     public static final boolean[] SEVENTH_RANK = initRank(48);
+    public static final boolean[] SIXTH_RANK = initRank(40);
+    public static final boolean[] FIFTH_RANK = initRank(32);
+    public static final boolean[] FOURTH_RANK = initRank(24);
+    public static final boolean[] THIRD_RANK = initRank(16);
     public static final boolean[] SECOND_RANK = initRank(8);
     public static final boolean[] FIRST_RANK = initRank(0);
 

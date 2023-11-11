@@ -8,7 +8,6 @@ import com.chess.engine.board.Move.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class Pawn extends Piece {
@@ -107,7 +106,7 @@ public Collection<Move> calculateLegalMoves(final Board board) {
             }
         }
     }
-    return Collections.unmodifiableList(legalMoves);
+    return legalMoves;
 }
 
 
