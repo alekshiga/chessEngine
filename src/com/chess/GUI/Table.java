@@ -38,7 +38,7 @@ public class Table {
     private Tile destinationTile;
     private Piece humanMovedPiece;
     private BoardDirection boardDirection;
-    public boolean highlightLegalMoves;
+    public static boolean highlightLegalMoves;
 
 
     private static final String pieceIconPath = "C:\\Users\\User\\IdeaProjects\\chessEngine\\artIdea\\";
@@ -53,7 +53,7 @@ public class Table {
     private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 400);
 
     public Table() {
-        this.gameFrame = new JFrame("ZchessV");
+        this.gameFrame = new JFrame("chess");
         this.gameFrame.setLayout(new BorderLayout());
         final JMenuBar tableMenuBar = createTableMenuBar();
         this.gameFrame.setJMenuBar(tableMenuBar);
@@ -162,7 +162,7 @@ public class Table {
                 add(tilePanel);
             }
             validate();
-            repaint(); // refreshes the view
+            repaint();
         }
     }
 
@@ -249,6 +249,7 @@ public class Table {
         }
 
         private void showLegalMoves(final Board board) {
+            if (Table.getHighlightLegalMoves())
             for (final Move move : pieceLegalMoves(board)) {
                 if (move.getDestinationCoordinate() == this.tileId) {
                     try {
@@ -299,6 +300,10 @@ public class Table {
             validate();
             repaint();
         }
+    }
+
+    private static boolean getHighlightLegalMoves() {
+        return highlightLegalMoves;
     }
 
     public static class MoveLog {
