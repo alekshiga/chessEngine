@@ -111,10 +111,51 @@ public abstract class Move {
         }
     }
 
+public static class AttackMove extends Move {
+
+    final Piece attackedPiece;
+
+    public AttackMove(final Board board,
+                      final Piece movedPiece,
+                      final int destinationCoordinate,
+                      final Piece attackedPiece) {
+        super(board, movedPiece, destinationCoordinate);
+        this.attackedPiece = attackedPiece;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.attackedPiece.hashCode() + super.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof AttackMove otherAttackMove)) {
+            return false;
+        }
+
+        return super.equals(otherAttackMove) && getAttackedPiece().equals(otherAttackMove.getAttackedPiece());
+    }
+
+    @Override
+    public boolean isAttack() {
+        return true;
+    }
+
+    @Override
+    public Piece getAttackedPiece() {
+        return this.attackedPiece;
+    }
+}
+
     public static class MajorAttackMove extends AttackMove {
 
-        public MajorAttackMove(final Board board, final Piece pieceMoved, final int destinationCoordinate, final Piece pieceAttacked) {
-            super(board, pieceMoved, destinationCoordinate, pieceAttacked);
+        public MajorAttackMove(final Board board, final Piece movedPiece, final int destinationCoordinate, final Piece pieceAttacked) {
+            super(board, movedPiece, destinationCoordinate, pieceAttacked);
         }
 
         @Override
@@ -124,53 +165,7 @@ public abstract class Move {
 
         @Override
         public String toString() {
-            return super.toString();
-        }
-    }
-
-    public static class AttackMove extends Move {
-
-        final Piece attackedPiece;
-
-        public AttackMove(final Board board,
-                          final Piece movedPiece,
-                          final int destinationCoordinate,
-                          final Piece attackedPiece) {
-            super(board, movedPiece, destinationCoordinate);
-            this.attackedPiece = attackedPiece;
-        }
-
-        @Override
-        public int hashCode() {
-            return this.attackedPiece.hashCode() + super.hashCode();
-        }
-
-        @Override
-        public boolean equals(final Object other) {
-            if (this == other) {
-                return true;
-            }
-
-            if (!(other instanceof AttackMove otherAttackMove)) {
-                return false;
-            }
-
-            return super.equals(otherAttackMove) && getAttackedPiece().equals(otherAttackMove.getAttackedPiece());
-        }
-
-        @Override
-        public boolean isAttack() {
-            return true;
-        }
-
-        @Override
-        public Piece getAttackedPiece() {
-            return this.attackedPiece;
-        }
-
-        @Override
-        public String toString() {
-            return BoardUtils.getPositionAtCoordinate(this.movedPiece.getPiecePosition()).charAt(0) + "x" +
+            return this.movedPiece.getPieceType().toString() + "x" +
                     BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
         }
     }
@@ -201,9 +196,11 @@ public abstract class Move {
                               final Piece pieceAttacked) {
             super(board, pieceMoved, destinationCoordinate, pieceAttacked);
         }
+
         @Override
         public String toString() {
-            return super.toString();
+            return BoardUtils.getPositionAtCoordinate(this.movedPiece.getPiecePosition()).substring(0, 1) + "x" +
+                   BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
         }
 
         @Override
