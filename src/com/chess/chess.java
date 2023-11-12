@@ -8,7 +8,7 @@ public class chess {
     public static void main(String[] args) {
 
         Board board = Board.createStandartBoard();
-        Table table = new Table();
+        Table.get().show();
     }
 
 }

@@ -32,14 +32,13 @@ public class Knight extends Piece {
 
         for (final int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES) {
             final int candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
-            if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {         // we cant move forward if piece is on the edge if the board
-                if (isFirstColumnException(this.piecePosition, currentCandidateOffset) ||
-                        isSecondColumnException(this.piecePosition, currentCandidateOffset) ||
-                        isSeventhColumnException(this.piecePosition, currentCandidateOffset) ||
-                        isEighthColumnException(this.piecePosition, currentCandidateOffset)) {
+            if (isFirstColumnException(this.piecePosition, currentCandidateOffset) ||
+                isSecondColumnException(this.piecePosition, currentCandidateOffset) ||
+                isSeventhColumnException(this.piecePosition, currentCandidateOffset) ||
+                isEighthColumnException(this.piecePosition, currentCandidateOffset)) {
                     continue;
                 }
-
+            if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                 final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                 if (!candidateDestinationTile.isOccupied()) {
                     legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));  // if tile is empty then there is one more legal move

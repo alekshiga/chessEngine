@@ -75,8 +75,7 @@ public enum Alliance {
     public abstract boolean isBlack();
     public abstract int getDirection();
     public abstract int getOppositeDirection();
-    public abstract boolean isPawnPromotionSquare(int position);
-
+    public abstract boolean isPawnPromotionSquare(final int position);
     public abstract Player choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer);
 
 

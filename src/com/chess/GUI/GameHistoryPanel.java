@@ -37,12 +37,12 @@ class GameHistoryPanel extends JPanel {
         int currentRow = 0;
         this.model.clear();
         for (final Move move : moveHistory.getMoves()) {
-            final String moveText = move.toString();
+            final String moveNote = move.toString();
             if (move.getMovedPiece().getPieceAlliance().isWhite()) {
-                this.model.setValueAt(moveText, currentRow, 0);
+                this.model.setValueAt(moveNote, currentRow, 0);
             }
             else if (move.getMovedPiece().getPieceAlliance().isBlack()) {
-                this.model.setValueAt(moveText, currentRow, 1);
+                this.model.setValueAt(moveNote, currentRow, 1);
                 currentRow++;
             }
         }
@@ -65,9 +65,9 @@ class GameHistoryPanel extends JPanel {
     }
 
     private static String calculateCheckAndCheckMateHash(final Board board) {
-        if(board.currentPlayer().isInCheckMate()) {
+        if (board.currentPlayer().isInCheckMate()) {
             return "#";
-        } else if(board.currentPlayer().isInCheck()) {
+        } else if (board.currentPlayer().isInCheck()) {
             return "+";
         }
         return "";

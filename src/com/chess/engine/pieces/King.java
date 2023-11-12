@@ -29,9 +29,9 @@ public class King extends Piece {
         final List<Move> legalMoves = new ArrayList<>();
 
         for (final int currentCandidateOffset : CANDIDATE_MOVE_COORDINATE) {
-            final int candidateDestinationCoordinate
-                    = this.piecePosition + currentCandidateOffset;
-            if (isFirstColumnException(this.piecePosition, currentCandidateOffset) || isEighthColumnException(this.piecePosition, candidateDestinationCoordinate)) {
+            final int candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
+            if (isFirstColumnException(this.piecePosition, currentCandidateOffset) ||
+                isEighthColumnException(this.piecePosition, currentCandidateOffset)) {
                 continue;
             }
             if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {

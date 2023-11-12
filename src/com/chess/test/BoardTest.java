@@ -3,11 +3,8 @@ package com.chess.test;
 import com.chess.engine.AI.Minimax;
 import com.chess.engine.AI.MoveStrategy;
 import com.chess.engine.board.Board;
-import com.chess.engine.*;
-import com.chess.engine.board.BoardBuilder;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
-import com.chess.engine.player.MoveStatus;
 import com.chess.engine.player.MoveTransition;
 import org.junit.jupiter.api.Test;
 
@@ -65,6 +62,17 @@ class BoardTest {
 
     }
 
+    @Test
+    public void teste2e3Pawn() {
+        final Board board = Board.createStandartBoard();
+        final MoveStrategy strategy = new Minimax(4);
+        final MoveTransition e2e4 = board.currentPlayer().makeMove(Move.MoveFactory.createMove(board,
+                                                                                               BoardUtils.getCoordinateAtPosition("e2"),
+                                                                                               BoardUtils.getCoordinateAtPosition("e4")));
+        final Move bestMove = Move.MoveFactory.createMove(board, BoardUtils.getCoordinateAtPosition("e7"), BoardUtils.getCoordinateAtPosition("e6"));
+        final Move AIMove = strategy.execute(e2e4.getTransitionBoard());
+        assertEquals(AIMove, bestMove);
+    }
 }
 
 

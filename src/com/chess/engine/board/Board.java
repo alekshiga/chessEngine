@@ -15,7 +15,7 @@ public class Board {
     private final List<Tile> gameBoard;
     private final WhitePlayer whitePlayer;
     private final BlackPlayer blackPlayer;
-    private final Player currentPlayer;
+    public final Player currentPlayer;
     private final Pawn enPassantPawn;
 
     private final Collection<Piece> whitePieces;
