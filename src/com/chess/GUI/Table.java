@@ -9,6 +9,8 @@ import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.player.MoveTransition;
 import com.chess.engine.player.PlayerType;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import javax.imageio.ImageIO;
@@ -186,11 +188,22 @@ private Table() {
 
         @Override
         protected Move doInBackground() throws Exception {
-            final MoveStrategy miniMax = new Minimax(4);
+            int piecesCounter = Table.get().getCurrentBoard().currentPlayer.getActivePieces().size() +
+                    Table.get().getCurrentBoard().currentPlayer.getOpponent().getActivePieces().size();
 
-            final Move bestMove = miniMax.execute(Table.get().getCurrentBoard());
-
-            return bestMove;
+            if (piecesCounter > 10) {
+                final MoveStrategy minimax = new Minimax(4);
+                final Move bestMove = minimax.execute(Table.get().getCurrentBoard());
+                return bestMove;
+            } else if (piecesCounter > 6) {
+                final MoveStrategy minimax = new Minimax((5));
+                final Move bestMove = minimax.execute(Table.get().getCurrentBoard());
+                return bestMove;
+            } else {
+                final MoveStrategy minimax = new Minimax((6));
+                final Move bestMove = minimax.execute(Table.get().getCurrentBoard());
+                return bestMove;
+            }
         }
 
         @Override
@@ -395,12 +408,12 @@ public enum BoardDirection {
                                     BoardUtils.SIXTH_RANK[this.tileId] ||
                                     BoardUtils.FOURTH_RANK[this.tileId] ||
                                     BoardUtils.SECOND_RANK[this.tileId]) {
-                                setBackground(this.tileId % 2 == 0 ? legalMoveLightTileColor : legalMoveDarkTileColor);
+                                setBackground(this.tileId % 2 != 0 ? legalMoveLightTileColor : legalMoveDarkTileColor);
                             } else if (BoardUtils.SEVENTH_RANK[this.tileId] ||
                                     BoardUtils.FIFTH_RANK[this.tileId] ||
                                     BoardUtils.THIRD_RANK[this.tileId] ||
                                     BoardUtils.FIRST_RANK[this.tileId]) {
-                                setBackground(this.tileId % 2 != 0 ? legalMoveLightTileColor : legalMoveDarkTileColor);
+                                setBackground(this.tileId % 2 == 0 ? legalMoveLightTileColor : legalMoveDarkTileColor);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -412,6 +425,10 @@ public enum BoardDirection {
 
         private Collection<Move> pieceLegalMoves(final Board board) {
             if (humanMovedPiece != null && humanMovedPiece.getPieceAlliance() == board.currentPlayer().getAlliance()) {
+                if (humanMovedPiece.getPieceType().isKing()) {
+                    return ImmutableList.copyOf(Iterables.concat(humanMovedPiece.calculateLegalMoves(board),
+                            board.currentPlayer.calculateKingCastles(board.currentPlayer.getLegalMoves(), board.currentPlayer.getOpponent().getLegalMoves())));
+                }
                 return humanMovedPiece.calculateLegalMoves(board);
             } else {
                 return Collections.emptyList();
@@ -423,12 +440,12 @@ public enum BoardDirection {
                     BoardUtils.SIXTH_RANK[this.tileId] ||
                     BoardUtils.FOURTH_RANK[this.tileId] ||
                     BoardUtils.SECOND_RANK[this.tileId]) {
-                setBackground(this.tileId % 2 == 0 ? lightTileColor : darkTileColor);
+                setBackground(this.tileId % 2 != 0 ? lightTileColor : darkTileColor);
             } else if (BoardUtils.SEVENTH_RANK[this.tileId] ||
                     BoardUtils.FIFTH_RANK[this.tileId] ||
                     BoardUtils.THIRD_RANK[this.tileId] ||
                     BoardUtils.FIRST_RANK[this.tileId]) {
-                setBackground(this.tileId % 2 != 0 ? lightTileColor : darkTileColor);
+                setBackground(this.tileId % 2 == 0 ? lightTileColor : darkTileColor);
             }
         }
 
