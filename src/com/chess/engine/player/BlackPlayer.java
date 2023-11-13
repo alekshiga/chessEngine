@@ -23,44 +23,44 @@ public class BlackPlayer extends Player {
     }
 
     @Override
-    protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals,
+    public Collection<Move> calculateKingCastles(final Collection<Move> playerLegals,
                                                     final Collection<Move> opponentLegals) {
         final List<Move> kingCastles = new ArrayList<>();
-        if (this.playerKing.isFirstMove() && !this.isInCheck()) {    // King side castle
+        if (this.playerKing.isFirstMove() && !this.isInCheck()) {
             if (!this.board.getTile(5).isOccupied() && !this.board.getTile(6).isOccupied()) {
                 final Tile rookTile = this.board.getTile(7);
-                if (rookTile.isOccupied() && rookTile.getPiece().isFirstMove()) {
+                if (rookTile.getPiece().isFirstMove()) {
                     if (Player.calculateAttacksOnTile(5, opponentLegals).isEmpty() &&
-                            Player.calculateAttacksOnTile(6, opponentLegals).isEmpty() &&
-                            rookTile.getPiece().getPieceType().isRook() ) {
+                            Player.calculateAttacksOnTile(6, opponentLegals).isEmpty()) {
                         kingCastles.add(new ShortSideCastleMove(this.board,
-                                                                    this.playerKing,
-                                                                    6,
-                                                                    (Rook) rookTile.getPiece(),
-                                                                    rookTile.getTileCoordinate(),
-                                                                    5));
+                                                                this.playerKing,
+                                                                6,
+                                                                (Rook) rookTile.getPiece(),
+                                                                rookTile.getTileCoordinate(),
+                                                                5));
                     }
                 }
             }
-            if(!this.board.getTile(1).isOccupied() &&  // Queen side castle
+
+            if (!this.board.getTile(1).isOccupied() &&
                     !this.board.getTile(2).isOccupied() &&
                     !this.board.getTile(3).isOccupied()) {
 
                 final Tile rookTile = this.board.getTile(0);
-                if (rookTile.isOccupied() && rookTile.getPiece().isFirstMove() &&
-                    Player.calculateAttacksOnTile((2), opponentLegals).isEmpty() &&
-                    Player.calculateAttacksOnTile(3, opponentLegals).isEmpty() &&
-                    rookTile.getPiece().getPieceType().isRook()) {
+                if (rookTile.getPiece().isFirstMove() &&
+                    Player.calculateAttacksOnTile(1, opponentLegals).isEmpty() &&
+                    Player.calculateAttacksOnTile(2, opponentLegals).isEmpty() &&
+                    Player.calculateAttacksOnTile(3, opponentLegals).isEmpty()) {
                         kingCastles.add(new LongSideCastleMove(this.board,
-                                                                this.playerKing,
-                                                                2,
-                                                                (Rook) rookTile.getPiece(),
-                                                                rookTile.getTileCoordinate(),
-                                                                3));
+                                                               this.playerKing,
+                                                               2,
+                                                               (Rook) rookTile.getPiece(),
+                                                               rookTile.getTileCoordinate(),
+                                                               3));
                 }
             }
         }
-        return ImmutableList.copyOf(kingCastles);
+        return kingCastles;
     }
 
     @Override
