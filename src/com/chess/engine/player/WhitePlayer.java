@@ -24,11 +24,14 @@ public class WhitePlayer extends Player {
                                                     final Collection<Move> opponentLegals) {
         final Collection<Move> kingCastles = new ArrayList<>();
         if (this.playerKing.isFirstMove() && !this.isInCheck()) {
-            if (!this.board.getTile(61).isOccupied() && !this.board.getTile(62).isOccupied()) {
+            if (!this.board.getTile(61).isOccupied() &&
+                !this.board.getTile(62).isOccupied()) {
+
                 final Tile rookTile = this.board.getTile(63);
-                if (rookTile.getPiece().isFirstMove()) {
+                if (rookTile.isOccupied() && rookTile.getPiece().isFirstMove()) {
                     if (Player.calculateAttacksOnTile(61, opponentLegals).isEmpty() &&
-                        Player.calculateAttacksOnTile(62, opponentLegals).isEmpty()) {
+                        Player.calculateAttacksOnTile(62, opponentLegals).isEmpty() &&
+                            rookTile.getPiece().getPieceType().isRook()) {
                             kingCastles.add(new ShortSideCastleMove(this.board,
                                                                     this.playerKing,
                                                                     62,
@@ -43,10 +46,11 @@ public class WhitePlayer extends Player {
                !this.board.getTile(59).isOccupied()) {
 
                 final Tile rookTile = this.board.getTile(56);
-                if (rookTile.getPiece().isFirstMove() &&
+                if (rookTile.isOccupied() && rookTile.getPiece().isFirstMove() &&
                     Player.calculateAttacksOnTile(57, opponentLegals).isEmpty() &&
                     Player.calculateAttacksOnTile(58, opponentLegals).isEmpty() &&
-                    Player.calculateAttacksOnTile(59, opponentLegals).isEmpty()) {
+                    Player.calculateAttacksOnTile(59, opponentLegals).isEmpty() &&
+                        rookTile.getPiece().getPieceType().isRook()) {
                         kingCastles.add(new LongSideCastleMove(this.board,
                                                                 this.playerKing,
                                                                 58,
