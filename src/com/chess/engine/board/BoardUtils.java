@@ -1,7 +1,5 @@
 package com.chess.engine.board;
 
-import com.google.common.collect.ImmutableMap;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,7 +71,7 @@ public class BoardUtils {
         for (int i = 0; i < NUM_TILES; i++) {
             positionToCoordinate.put(ALGEBRAIC_NOTATION[i], i);
         }
-        return ImmutableMap.copyOf(positionToCoordinate);
+        return positionToCoordinate;
     }
 
     public static int getCoordinateAtPosition(final String position) {

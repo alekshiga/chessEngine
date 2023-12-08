@@ -1,7 +1,6 @@
 package com.chess.engine.board;
 
 import com.chess.engine.pieces.Piece;
-import com.google.common.collect.ImmutableMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +16,9 @@ public abstract class Tile {
     private static Map<Integer, EmptyTile> createAllPossibleEmptyTiles() {
         final Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
         for (int i = 0; i < NUM_TILES; ++i) {
-            emptyTileMap.put(i, new EmptyTile(i));  // creating a Map of empty tiles, then return an Immutable copy of it
-        }                                           // so nobody can change out map
-        return ImmutableMap.copyOf(emptyTileMap);
+            emptyTileMap.put(i, new EmptyTile(i));
+        }
+        return emptyTileMap;
     }
 
     public static Tile createTile(final int tileCoordinate, final Piece piece) {

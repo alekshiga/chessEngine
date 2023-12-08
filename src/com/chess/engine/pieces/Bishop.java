@@ -54,12 +54,12 @@ private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = { -9, -7, 7, 9 };
                 candidateDestinationCoordinate += candidateCoordinateOffset;
                 if(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                     final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
-                    if(!candidateDestinationTile.isOccupied()){
+                    if (!candidateDestinationTile.isOccupied()) {
                         legalMoves.add(new MajorMove(board,this,candidateDestinationCoordinate));
                     } else {
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
-                        if(this.pieceAlliance != pieceAlliance){
+                        if (this.pieceAlliance != pieceAlliance) {
                             legalMoves.add(new MajorAttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
                         }
                         break;
